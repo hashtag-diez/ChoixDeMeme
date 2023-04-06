@@ -2,33 +2,28 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Duel from './components/Duel'
+import { TDuel } from './types'
 
+const example: TDuel = {
+  comments: [],
+  player1: {
+    link: 'https://unsplash.it/900/1200',
+    caption: "IMAGE 1"
+  },
+  player2: {
+    link: 'https://unsplash.it/900/1201',
+    caption: "IMAGE 2"
+  },
+  vote1: 1015,
+  vote2: 942
+}
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [duel, setDuel] = useState<TDuel>(example)
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+    <main>
+      <Duel {...duel}/>
+    </main>
   )
 }
 

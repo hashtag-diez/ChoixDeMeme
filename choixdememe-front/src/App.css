@@ -43,9 +43,11 @@ img{
   z-index: 2;
   font-size: 4vw;
   color: white;
-  font-weight: 600;
-  padding: 0px 1.5rem;
-  max-width: 80%;
+  font-weight: 700;
+  line-height: 1.4ch;
+  padding: 1.5vh 1rem;
+  max-width: 60%;
+  text-align: center;
   word-break: break-all;
   background-color: #000000be;
 }

@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"gorm.io/gorm"
 )
@@ -21,10 +22,21 @@ func duelHandler(db *gorm.DB) http.HandlerFunc {
             // Get duels created by the current user
             userID := getUserIDFromRequest(req)
 
+			// Parse the query parameters
+            limitStr := req.URL.Query().Get("limit")
+            limit, err := strconv.Atoi(limitStr)
+            if err != nil {
+                limit = 10 // Set a default limit if limit parameter is not provided or is invalid
+            }
+			
+            // Retrieve the duels
             var duels []Duel
-            db.Table("deuls").Where("user_id = ?", userID).Find(&duels)
+            db.Table("deuls").Where("user_id = ?", userID).Limit(limit).Find(&duels)
+
+            // Return the duels as a response
             w.Header().Set("Content-Type", "application/json")
             json.NewEncoder(w).Encode(duels)
+			
         } else if req.Method == "POST" {
             // Parse the request body
             decoder := json.NewDecoder(req.Body)

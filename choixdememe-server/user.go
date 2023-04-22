@@ -8,6 +8,7 @@ import (
     "net/http"
 
     "gorm.io/gorm"
+
 )
 
 type User struct {
@@ -26,7 +27,7 @@ func createUser(db *gorm.DB) http.HandlerFunc {
             return
         }
 
-        log.Printf("Received JSON: %+v", user)
+        //log.Printf("Received JSON: %+v", user)
 
         if db == nil {
             log.Println("Error: db is nil")
@@ -39,7 +40,7 @@ func createUser(db *gorm.DB) http.HandlerFunc {
 
         db.Table("users").Create(&user)
 
-        log.Printf("Created user: %+v", user)
+        //log.Printf("Created user: %+v", user)
 
         w.WriteHeader(http.StatusCreated)
         json.NewEncoder(w).Encode(user)

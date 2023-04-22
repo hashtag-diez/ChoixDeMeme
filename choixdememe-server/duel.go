@@ -48,7 +48,7 @@ func duelHandler(db *gorm.DB) http.HandlerFunc {
             }
             
             // Get the user ID from the request
-            userID := getUserIDFromRequest(req)
+            userID := duel.UserID
             duel.UserID = userID
             
             // Save the new duel to the database

@@ -70,6 +70,10 @@ func main() {
 	http.HandleFunc("/random", randomHandler)
 	http.HandleFunc("/users", createUser(db))
 	http.HandleFunc("/users/login", loginHandler(db))
+	http.HandleFunc("/vote", voteHandler(db))
+	http.HandleFunc("/duel", duelHandler(db))
+	http.HandleFunc("/comment", commentaireHandler(db))
+	
 
 
 	// disconnect database

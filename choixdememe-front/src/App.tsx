@@ -1,15 +1,13 @@
-import { useState } from 'react'
-import './App.css'
-import Duel from './components/Duel'
-import { TDuel } from './types'
-
+import "./App.css";
+import Duel from "./components/Duel";
+import Menu from "./layout/Menu";
 
 function App() {
   return (
-    <main>
-      <Duel/>
-    </main>
-  )
+    <Menu>
+      <Duel />
+    </Menu>
+  );
 }
 
-export default App
+export default App;

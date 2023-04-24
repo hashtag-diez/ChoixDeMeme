@@ -3,19 +3,15 @@ import Avatar from "./Avatar";
 
 const Comment = (comment: TComment) => {
   const formatDate = (datePublication:Date) => {
-    // Obtenez la date actuelle
-    var dateActuelle = new Date();
+    let dateActuelle = new Date();
+    let differenceEnMillisecondes = dateActuelle.getTime() - datePublication.getTime();
 
-    // Calculez la différence entre la date actuelle et la date de publication en millisecondes
-    var differenceEnMillisecondes = dateActuelle.getTime() - datePublication.getTime();
+    let secondes = Math.floor(differenceEnMillisecondes / 1000);
+    let minutes = Math.floor(secondes / 60);
+    let heures = Math.floor(minutes / 60);
+    let jours = Math.floor(heures / 24);
 
-    // Calculez la différence en secondes, minutes, heures et jours
-    var secondes = Math.floor(differenceEnMillisecondes / 1000);
-    var minutes = Math.floor(secondes / 60);
-    var heures = Math.floor(minutes / 60);
-    var jours = Math.floor(heures / 24);
-
-    var message;
+    let message;
     if (jours > 0) {
       message = "publié il y a " + jours + " jour" + (jours > 1 ? "s" : "");
     } else if (heures > 0) {

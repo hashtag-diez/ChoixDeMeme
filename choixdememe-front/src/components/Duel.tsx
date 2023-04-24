@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { TDuel } from "../types";
-import Comments from "./Comment";
 import { useAtom } from "jotai";
 import duelAtom from "../atoms/Duel";
 import Modal from "./Modal";

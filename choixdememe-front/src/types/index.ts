@@ -6,6 +6,7 @@ interface TGIF{
 interface TUser{
   id: number
   username: string
+  mail?: string
 }
 
 interface TComment{

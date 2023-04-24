@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -55,8 +56,8 @@ func randomHandler(w http.ResponseWriter, req *http.Request) {
 
 
 func main() {
+	fmt.Println("Starting server...")
 	// connect to database
-	
     var err error
 	db, err = gorm.Open(sqlite.Open("memes.db"), &gorm.Config{})
 	if err != nil {
@@ -68,19 +69,35 @@ func main() {
 	
 	http.HandleFunc("/hello", helloHandler)
 	http.HandleFunc("/random", randomHandler)
+
+	// add 10 duels to database
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+	key, _ := os.LookupEnv("GIPHY_API_KEY")
+	err = addDuels(db, key)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Duel data successfully added to database.")
+
 	http.HandleFunc("/users", createUser(db))
 	http.HandleFunc("/users/login", loginHandler(db))
 	http.HandleFunc("/vote", voteHandler(db))
 	http.HandleFunc("/duel", duelHandler(db))
 	http.HandleFunc("/comment", commentaireHandler(db))
 	
-
+	//vide duels
+	videDuels(db)
 
 	// disconnect database
 	sqlDB, _ := db.DB()
 	defer sqlDB.Close()
 
+	fmt.Println("Server started and listening on port 8000...")
 	http.ListenAndServe(":8000", nil)
 
+	// block main thread
+	select {}
 }
 

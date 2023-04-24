@@ -22,10 +22,10 @@ type Choice struct {
 
 func voteHandler(db *gorm.DB) http.HandlerFunc {
     return func(w http.ResponseWriter, req *http.Request) {
+        // get the ID of duel
+        duelID := getDuelIDFromRequest(req)
+        
         if req.Method == "GET"{
-            // get the ID of duel
-            duelID := getDuelIDFromRequest(req)
-            
             // get the vote record for the duel
             var vote Vote
             if err := db.Table("votes").Where("duel_id = ?", duelID).First(&vote).Error; err != nil {
@@ -45,9 +45,6 @@ func voteHandler(db *gorm.DB) http.HandlerFunc {
                 http.Error(w, err.Error(), http.StatusBadRequest)
                 return
             }
-
-            // get the ID of duel
-            duelID := choice.DuelID
 
             // Start a transaction to update vote count
             tx := db.Begin()

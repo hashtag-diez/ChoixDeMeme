@@ -1,21 +1,23 @@
 package main
 
 import (
-    "crypto/md5"
-    "encoding/hex"
-    "encoding/json"
-    "log"
-    "net/http"
+	"crypto/md5"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
 
-    "gorm.io/gorm"
-
+	"gorm.io/gorm"
 )
 
 type User struct {
+    ID       int   `gorm:"primaryKey"`
     Username string `json:"username"`
     Email    string `json:"email"`
     Password string `json:"password"`
 }
+
 
 func createUser(db *gorm.DB) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
@@ -76,7 +78,20 @@ func loginHandler(db *gorm.DB) http.HandlerFunc {
 
         log.Println("User logged in:", dbUser.Username)
 
+
+        // Generate token
+        token, err := generateToken(dbUser.ID, db)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            return
+        }
+
+        // Add token to response headers
+        w.Header().Set("Authorization", fmt.Sprintf("Bearer %s", token.Value))
+
+        // Return user information as response body
         w.WriteHeader(http.StatusOK)
         json.NewEncoder(w).Encode(dbUser)
     }
 }
+

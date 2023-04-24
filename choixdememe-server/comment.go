@@ -15,6 +15,12 @@ type Comment struct {
 
 func commentaireHandler (db *gorm.DB) http.HandlerFunc{
 	return func(w http.ResponseWriter, req *http.Request) {
+	// check token
+	userID, err := getUserIDFromRequest(req, db)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusUnauthorized)
+		return
+	}
 	if req.Method == "GET"{
 		// get the ID of duel
 		duelID := getDuelIDFromRequest(req)
@@ -35,13 +41,12 @@ func commentaireHandler (db *gorm.DB) http.HandlerFunc{
 			return
 		}
 
-		// get the ID of user
-		//userID := getUserIDFromRequest(req)
+		
 		// get the ID of duel
 		duelID := getDuelIDFromRequest(req)
 
 		// Create the comment
-		//comment.UserID = userID
+		comment.UserID = userID
 		comment.DuelID = duelID
 		db.Table("comments").Create(&comment)
 

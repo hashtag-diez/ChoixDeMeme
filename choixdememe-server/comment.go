@@ -21,10 +21,10 @@ func commentaireHandler (db *gorm.DB) http.HandlerFunc{
 		http.Error(w, err.Error(), http.StatusUnauthorized)
 		return
 	}
+	// get the ID of duel
+	duelID := getDuelIDFromRequest(req)
+
 	if req.Method == "GET"{
-		// get the ID of duel
-		duelID := getDuelIDFromRequest(req)
-        
         // get all comments for the duel
         var comments []Comment
         db.Table("comments").Where("duel_id = ?", duelID).Find(&comments)
@@ -40,10 +40,6 @@ func commentaireHandler (db *gorm.DB) http.HandlerFunc{
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
-		
-		// get the ID of duel
-		duelID := getDuelIDFromRequest(req)
 
 		// Create the comment
 		comment.UserID = userID

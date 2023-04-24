@@ -95,7 +95,7 @@ func main() {
 	defer sqlDB.Close()
 
 	fmt.Println("Server started and listening on port 8000...")
-	http.ListenAndServe(":8000", nil)
+	log.Fatal(http.ListenAndServe(":8000", nil))
 
 	// block main thread
 	select {}

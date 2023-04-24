@@ -10,8 +10,8 @@ import (
 const tokenSize = 32 
 
 type Token struct {
-    Value    string
     UserID   int
+	Value    string
 }
 
 func generateToken(userID int , db *gorm.DB) (*Token, error) {

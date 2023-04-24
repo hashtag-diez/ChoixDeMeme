@@ -42,7 +42,7 @@ func createUser(db *gorm.DB) http.HandlerFunc {
 
         db.Table("users").Create(&user)
 
-        //log.Printf("Created user: %+v", user)
+        log.Printf("Created user: %+v", user)
 
         w.WriteHeader(http.StatusCreated)
         json.NewEncoder(w).Encode(user)
@@ -67,12 +67,12 @@ func loginHandler(db *gorm.DB) http.HandlerFunc {
         var dbUser User
         err = db.Table("users").Where("username = ?", user.Username).First(&dbUser).Error
         if err != nil {
-            http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+            http.Error(w, "Invalid username ", http.StatusUnauthorized)
             return
         }
 
         if dbUser.Password != user.Password {
-            http.Error(w, "Invalid username or password", http.StatusUnauthorized)
+            http.Error(w, "Invalid password", http.StatusUnauthorized)
             return
         }
 
@@ -85,9 +85,14 @@ func loginHandler(db *gorm.DB) http.HandlerFunc {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
+        // Print token value
+        fmt.Println("Token generated:", token.Value)
 
         // Add token to response headers
         w.Header().Set("Authorization", fmt.Sprintf("Bearer %s", token.Value))
+
+        // Print response headers
+        fmt.Println("Response headers:", w.Header())
 
         // Return user information as response body
         w.WriteHeader(http.StatusOK)

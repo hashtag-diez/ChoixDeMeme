@@ -9,7 +9,7 @@ const duelAtom: Atom<TDuel> = atom({
         id: 1
       },
       content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem quisquam sunt eveniet voluptatem quaerat saepe voluptates perspiciatis. Et aspernatur cum sit repellendus quo, numquam illo amet odit delectus rerum corrupti?",
-      creation_date: new Date(Date.now()),
+      creation_date: new Date(1682339350706),
     },
     {
       author: {
@@ -17,7 +17,7 @@ const duelAtom: Atom<TDuel> = atom({
         id: 1
       },
       content: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem quisquam sunt eveniet voluptatem quaerat saepe voluptates perspiciatis. Et aspernatur cum sit repellendus quo, numquam illo amet odit delectus rerum corrupti?",
-      creation_date: new Date(Date.now()),
+      creation_date: new Date(1682339350706),
     }
   ],
   player1: {

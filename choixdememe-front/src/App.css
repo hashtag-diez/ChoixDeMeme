@@ -326,6 +326,99 @@ nav.out{
   width: 95%;
 }
 
+.accounting{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.accounting p{
+  font-size: 18px;
+}
+.accounting ul{
+  padding-left: 0;
+}
+.accounting li{
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.45rem;
+  font-weight: 500;
+  gap: 1rem;
+  width: 100%;
+}
+.accounting h3{
+  margin: 0;
+}
+.duel_presentation{
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  aspect-ratio: 21/9;
+}
+.duel_presentation label{
+  position: absolute;
+  color: white;
+  font-size: 4rem;
+  top: calc(50% - 3.2rem);
+  font-weight: 700;
+  z-index: 10;
+}
+.duel_presentation img{
+  width: 50%;
+  aspect-ratio: 1/1;
+  position: relative;
+  filter: brightness(50%);
+}
+.matchmaking{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  color: black;
+}
+.matchmaking input{
+  width: 95%;
+  background: white;
+  border: 0;
+  border-bottom: 5px solid #0000006e;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: black;
+  outline: none;
+}
+.matchmaking input[type="search"]{
+  padding: 0.6rem 0rem;
+  font-size: 1.7rem;
+  padding-right: 1.5rem;
+}
+.loupe{
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  z-index: 21;
+  left: 88%;
+  bottom: 0.75rem;
+  cursor: pointer;
+}
+.gif_results{
+  position: absolute;
+  width: 96%;
+  top: 3.5rem;
+  height: 20vh;
+  background: white;
+  z-index: 20;
+  padding: 1.5rem;
+}
+.selection{
+  width: 100%;
+  display: grid;
+  grid-row: 1;
+  grid-column: 2;
+  grid-template-columns: 50% 50%;
+}
 @keyframes slideIn {
   0%{
     transform: translateX(-20vw);

@@ -23,7 +23,7 @@ const Modal = ({
           <form action="" className="comment_form">
             <div className="comment_input">
               <Avatar {...user} />
-              <input type="text" placeholder="Write your comment" />
+              <input type="text" style={{width: "100%"}} placeholder="Write your comment" />
             </div>
             <button formAction="submit">
               <img src="send.png" alt="" />

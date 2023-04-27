@@ -1,6 +1,17 @@
-import React from "react";
+import { useRef } from "react";
 
 const Auth = () => {
+  const pwInput = useRef<HTMLInputElement>(null);
+  const pwConfirmInput = useRef<HTMLInputElement>(null);
+  function check(input: string) {
+    if (pwInput.current && pwConfirmInput.current) {
+      if (input != pwInput.current.value) {
+        pwConfirmInput.current.setCustomValidity("Passwords must be matching.");
+      } else {
+        pwConfirmInput.current.setCustomValidity("");
+      }
+    }
+  }
   return (
     <section className="auth">
       <form action="">
@@ -14,8 +25,18 @@ const Auth = () => {
         <h1>Sign up</h1>
         <input type="text" name="text" placeholder="Username" />
         <input type="mail" name="mail" placeholder="Mail" />
-        <input type="password" name="password" placeholder="Password" />
-        <input type="password" name="password" placeholder="Confirm Password" />
+        <input
+          type="pwInput"
+          name="password"
+          ref={pwConfirmInput}
+          placeholder="Password"
+        />
+        <input
+          type="password"
+          name="password"
+          ref={pwConfirmInput}
+          placeholder="Confirm Password"
+        />
         <button className="next appear">Sign up</button>
       </form>
     </section>

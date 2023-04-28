@@ -1,7 +1,7 @@
 import { Atom, atom } from 'jotai'
 import { TDuel } from '../types'
 
-const duelAtom: Atom<TDuel> = atom({
+const duelAtom = atom({
   comments: [
     {
       author: {
@@ -21,11 +21,11 @@ const duelAtom: Atom<TDuel> = atom({
     }
   ],
   player1: {
-    link: 'https://unsplash.it/900/1200',
+    link: 'https://media.giphy.com/media/l4EoYMyJH91ZR5NRu/giphy.gif',
     caption: "IMAGE 1"
   },
   player2: {
-    link: 'https://unsplash.it/900/1201',
+    link: 'https://media.giphy.com/media/utTKp7idjkmxzYbxwj/giphy.gif',
     caption: "IMAGE 2"
   },
   vote1: 1015,

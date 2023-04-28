@@ -1,7 +1,12 @@
 import React, { useState } from "react";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import duelAtom from "../atoms/Duel";
 import Modal from "./Modal";
+
+type RandomResponse = {
+  id: string,
+  url: string
+}
 const Duel = () => {
   const [chose, setChose] = useState(false);
   const [match, setMatch] = useAtom(duelAtom);
@@ -19,6 +24,21 @@ const Duel = () => {
         .toFixed(0)
         .toString() + "%",
   } as React.CSSProperties;
+
+  async function refresh() {
+    console.log("ZYZZ")
+    let data1 = await fetch("http://localhost:8000/random")
+    let gif1: RandomResponse = await data1.json()
+    let data2 = await fetch("http://localhost:8000/random")
+    let gif2: RandomResponse = await data2.json()
+    const newMatch = {...match}
+    newMatch.player1.link = gif1.url
+    newMatch.player2.link = gif2.url
+    setChose(false)
+    setAppear(false)
+    setMatch(newMatch)
+  }
+
   return (
     <article className="duel">
       <section
@@ -41,7 +61,7 @@ const Duel = () => {
       ) : (
         <>
           <div className="options">
-            <button className="next appear">NEXT QUESTION</button>
+            <button className="next appear" onClick={() => refresh()}>NEXT QUESTION</button>
             {!appear ? (
               <div className="comments" onClick={() => setAppear(true)}>
                 <img src="/comments.svg" alt="" />

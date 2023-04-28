@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"math/rand"
 	"net/http"
 	"os"
 
@@ -27,13 +26,18 @@ type HelloResponse struct {
 
 var db *gorm.DB
 
-func helloHandler(w http.ResponseWriter, req *http.Request){
+func enableCors(w *http.ResponseWriter) {
+	(*w).Header().Set("Access-Control-Allow-Origin", "*")
+}
+
+func helloHandler(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-		res := HelloResponse{Message: "Hello World !"}
-		json.NewEncoder(w).Encode(res)
+	res := HelloResponse{Message: "Hello World !"}
+	json.NewEncoder(w).Encode(res)
 }
 
 func randomHandler(w http.ResponseWriter, req *http.Request) {
+	enableCors(&w)
 	w.Header().Set("Content-Type", "application/json")
 	g := giphy.DefaultClient
 	if err := godotenv.Load(); err != nil {
@@ -41,32 +45,29 @@ func randomHandler(w http.ResponseWriter, req *http.Request) {
 	}
 	key, _ := os.LookupEnv("GIPHY_API_KEY")
 	g.APIKey = key
-	res, err := g.Trending()
+	args := make([]string, 0)
+	res, err := g.Random(args)
 	if err != nil {
 		res := HelloResponse{Message: "Erreur"}
 		json.NewEncoder(w).Encode(res)
 	} else {
-		gif := res.Data[rand.Intn(len(res.Data))]
-		res := RandomResponse{ID: gif.ID, URL: gif.BitlyGifURL}
+		gif := res.Data
+		res := RandomResponse{ID: gif.Caption, URL: gif.MediaURL()}
 		json.NewEncoder(w).Encode(res)
 	}
 }
 
-
-
-
 func main() {
 	fmt.Println("Starting server...")
 	// connect to database
-    var err error
+	var err error
 	db, err = gorm.Open(sqlite.Open("memes.db"), &gorm.Config{})
 	if err != nil {
-    	panic("failed to connect database" + err.Error())
+		panic("failed to connect database" + err.Error())
 	}
 
 	db.Logger.LogMode(logger.Info)
-	
-	
+
 	http.HandleFunc("/hello", helloHandler)
 	http.HandleFunc("/random", randomHandler)
 
@@ -86,7 +87,7 @@ func main() {
 	http.HandleFunc("/vote", voteHandler(db))
 	http.HandleFunc("/duel", duelHandler(db))
 	http.HandleFunc("/comment", commentaireHandler(db))
-	
+
 	//vide duels
 	videDuels(db)
 
@@ -100,4 +101,3 @@ func main() {
 	// block main thread
 	select {}
 }
-

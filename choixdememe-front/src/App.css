@@ -370,6 +370,10 @@ nav.out{
   position: relative;
   filter: brightness(50%);
 }
+.modal.match main{
+  height: auto;
+  padding: 2rem;
+}
 .matchmaking{
   width: 100%;
   display: flex;
@@ -400,17 +404,30 @@ nav.out{
   height: 32px;
   z-index: 21;
   left: 88%;
-  bottom: 0.75rem;
+  top: 0.75rem;
   cursor: pointer;
 }
+img.gif_selected, .gif_results{
+  max-width: 95%;
+  height: auto;
+  aspect-ratio: 1/1 !important;
+  position: relative;
+}
 .gif_results{
-  position: absolute;
-  width: 96%;
-  top: 3.5rem;
-  height: 20vh;
   background: white;
   z-index: 20;
-  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  gap: 1rem;
+}
+.gif_found{
+  width: 30%;
+  height: 30%;
+  position: relative;
+  cursor: pointer;
 }
 .selection{
   width: 100%;
@@ -434,4 +451,19 @@ nav.out{
   100%{
     transform: translateX(-20vw);
   }
+}
+
+.trash{
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  z-index: 200;
+  right: 32px;
+  bottom: 1rem;
+  cursor: pointer;
+}
+
+.duel_list{
+  max-height: 70vh;
+  overflow-y: scroll;
 }

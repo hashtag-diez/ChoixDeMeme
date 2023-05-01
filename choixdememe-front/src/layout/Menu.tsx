@@ -29,7 +29,7 @@ const Menu = ({ children }: { children: ReactNode }) => {
             <button onClick={() => slideOut()} className="close_menu">
               X
             </button>
-            {user == null ? <Auth /> : <Account />}
+            {user.id == -1 ? <Auth /> : <Account />}
           </nav>
         </div>
       )}

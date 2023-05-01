@@ -6,16 +6,18 @@ interface TGIF{
 interface TUser{
   id: number
   username: string
-  mail?: string
+  email?: string
 }
 
 interface TComment{
-  author: TUser
-  content : string
-  creation_date: Date
+  Comment : string
+  UserID: number,
+  DuelID?: number
+  creation_date?: Date
 }
 
 interface TDuel {
+  duel_id: number
   player1: TGIF
   player2: TGIF
   vote1: number

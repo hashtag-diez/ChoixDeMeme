@@ -1,49 +1,50 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { TGIF } from "../types";
+import Loader from "./Loader";
 
 const GIFPicker = ({ setGif }) => {
   const [value, setValue] = useState("");
-  const [display, setDisplay] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [results, setResults] = useState<TGIF[]>([]);
-  let timeout: NodeJS.Timeout;
-  const search = () => {
-    setLoading(true);
-  };
-  useEffect(() => {
-    clearTimeout(timeout);
-    if (value !== "") {
-      timeout = setTimeout(() => {
-        search();
-      }, 500);
-    } else {
-      setResults([]);
+  const search = async () => {
+    if(value!==""){
+      setLoading(true);
+      let headers = {
+        "Access-Control-Request-Headers": "*",
+        "Authorization": localStorage.getItem("memes-token"),
+      }
+      let res = await  fetch("http://localhost:8000/search?keyword="+value, {
+        method: "GET",
+        headers: headers
+      })
+      let data: TGIF[] = await res.json()
+      if(res.status==200){
+        console.log(data)
+        setResults(data)
+      }
       setLoading(false);
+    } else{
+      setResults([])
+      setLoading(true)
     }
-  }, [value]);
-
+  };
   return (
     <div style={{ position: "relative" }}>
       <input
         type="search"
         value={value}
         onChange={(e) => setValue(e.currentTarget.value)}
-        onFocus={(e) => setDisplay(true)}
-        onBlur={(e) => setDisplay(false)}
         name=""
         id=""
         placeholder="Search for GIFs"
       />
-      <img className="loupe" src="/loupe.png" alt="" />
-      {!display ? (
-        ""
-      ) : (
+      <img className="loupe" src="/loupe.png" alt="" onClick={() => search()}/>
         <div className="gif_results">
-          {results.map((gif) => (
-            <img className="" src={gif.link} alt="" />
-          ))}
+          {!loading ? results.map((gif) => (
+            <img key={gif.caption} className="gif_found" src={gif.link} alt="" onClick={() => setGif(gif)} />
+          ))
+        : <Loader/>}
         </div>
-      )}
     </div>
   );
 };

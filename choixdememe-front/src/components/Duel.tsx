@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import duelAtom from "../atoms/Duel";
+import { useAtom } from "jotai";
+import {duelAtom} from "../atoms/Duel";
 import Modal from "./Modal";
 
-type RandomResponse = {
-  id: string,
-  url: string
-}
 const Duel = () => {
   const [chose, setChose] = useState(false);
   const [match, setMatch] = useAtom(duelAtom);
@@ -28,9 +24,9 @@ const Duel = () => {
   async function refresh() {
     console.log("ZYZZ")
     let data1 = await fetch("http://localhost:8000/random")
-    let gif1: RandomResponse = await data1.json()
+    let gif1 = await data1.json()
     let data2 = await fetch("http://localhost:8000/random")
-    let gif2: RandomResponse = await data2.json()
+    let gif2 = await data2.json()
     const newMatch = {...match}
     newMatch.player1.link = gif1.url
     newMatch.player2.link = gif2.url

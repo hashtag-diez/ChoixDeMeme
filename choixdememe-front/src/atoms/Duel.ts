@@ -1,4 +1,4 @@
-import { Atom, atom } from 'jotai'
+import { Atom, PrimitiveAtom, atom } from 'jotai'
 import { TDuel } from '../types'
 
 const duelAtom = atom({
@@ -32,4 +32,6 @@ const duelAtom = atom({
   vote2: 211
 })
 
-export default duelAtom
+const myDuelAtom = atom<TDuel[]>([])
+
+export { duelAtom, myDuelAtom }

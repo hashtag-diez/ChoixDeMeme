@@ -19,7 +19,7 @@ const Modal = ({
           X
         </button>
         <h1>COMMENTS</h1>
-        {user !== null ? (
+        {user.id !== -1 ? (
           <form action="" className="comment_form">
             <div className="comment_input">
               <Avatar {...user} />

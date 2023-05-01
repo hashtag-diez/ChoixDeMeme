@@ -37,5 +37,6 @@ func generateToken(userID int, db *gorm.DB) (*Token, error) {
 }
 
 func deleteToken(tok int, db *gorm.DB) {
-	db.Table("tokens").Delete("user_id = ?", tok)
+	token := &Token{}
+	db.Table("tokens").Where("user_id = ?", tok).Delete(&token)
 }

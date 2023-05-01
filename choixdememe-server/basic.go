@@ -36,7 +36,6 @@ func getUserIDFromRequest(req *http.Request, db *gorm.DB) (int, error) {
 
 func videDuels(db *gorm.DB) {
 	// vide duels
-	println("ZYZZ")
 	if err := db.Exec("DELETE FROM duels").Error; err != nil {
 		panic(err)
 	}

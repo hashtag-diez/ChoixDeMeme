@@ -60,6 +60,7 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/users", createUser(db))
 	mux.HandleFunc("/users/login", loginHandler(db))
+	mux.HandleFunc("/users/logout", logoutHandler(db))
 	mux.HandleFunc("/vote", voteHandler(db))
 	mux.HandleFunc("/duel", duelHandler(g, db))
 	mux.HandleFunc("/users/duel", userDuelHandler(db))

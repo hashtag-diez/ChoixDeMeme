@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -19,6 +18,13 @@ type Duel struct {
 	UserID   int    `json:"user_id"`
 }
 
+type DuelWithVotesAndComments struct {
+    Duel   Duel
+    Vote1  int
+	Vote2  int
+    Comments []Comment
+}
+
 func duelHandler(g *giphy.Client, db *gorm.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		// check token
@@ -30,13 +36,30 @@ func duelHandler(g *giphy.Client, db *gorm.DB) http.HandlerFunc {
 				limit = 10 // Set a default limit if limit parameter is not provided or is invalid
 			}
 
-			// Retrieve the duels
-			var duels []Duel
-			db.Table("duels").Limit(limit).Find(&duels)
-			fmt.Println(len(duels))
+			startStr := req.URL.Query().Get("start")
+            start, err := strconv.Atoi(startStr)
+            if err != nil {
+                start = 0 // Set a default start index if start parameter is not provided or is invalid
+            }
+
+			endStr := req.URL.Query().Get("end")
+            end, err := strconv.Atoi(endStr)
+            if err != nil {
+                end = start + limit // Set a default end index if end parameter is not provided or is invalid
+            }
+
+			// Retrieve the duels with votes and comments
+            duelsWithVotesAndComments, err := getDuelsWithVotesAndComments(db)
+            if err != nil {
+                http.Error(w, err.Error(), http.StatusInternalServerError)
+                return
+            }
+
+            duelsWithVotesAndComments = duelsWithVotesAndComments[start:end]
+
 			// Return the duels as a response
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(duels)
+			json.NewEncoder(w).Encode(duelsWithVotesAndComments)
 
 		} else {
 			http.Error(w, "Unsupported HTTP method", http.StatusMethodNotAllowed)
@@ -53,13 +76,16 @@ func userDuelHandler(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 		if req.Method == "GET" {
-			// Retrieve the duels
-			var ids []Duel
-			db.Table("duels").Where("user_id = ?", userID).Find(&ids)
+			// Retrieve the duels with votes and comments for the user
+			duelsWithVotesAndComments, err := getUserDuelsWithVotesAndComments(db, userID)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 
 			// Return the duels as a response
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(ids)
+			json.NewEncoder(w).Encode(duelsWithVotesAndComments)
 
 		} else if req.Method == "POST" {
 			// Parse the request body
@@ -89,6 +115,41 @@ func userDuelHandler(db *gorm.DB) http.HandlerFunc {
 			return
 		}
 	}
+}
+
+func getDuelsWithVotesAndComments(db *gorm.DB) ([]DuelWithVotesAndComments, error) {
+    var duelsWithVotesAndComments []DuelWithVotesAndComments
+
+    // Join the duels, votes and comments tables and retrieve the data
+    err := db.Table("duels").
+		Select("duels.*, votes.vote1, votes.vote2, comments.*").
+        Joins("left join votes on duels.id = votes.duel_id").
+        Joins("left join comments on duels.id = comments.duel_id").
+        Find(&duelsWithVotesAndComments).Error
+
+    if err != nil {
+        return nil, err
+    }
+
+    return duelsWithVotesAndComments, nil
+}
+
+func getUserDuelsWithVotesAndComments(db *gorm.DB, userID int) ([]DuelWithVotesAndComments, error) {
+    var duelsWithVotesAndComments []DuelWithVotesAndComments
+
+    // Join the duels, votes and comments tables and retrieve the data
+    err := db.Table("duels").
+        Select("duels.*, votes.vote1, votes.vote2, comments.*").
+        Joins("left join votes on duels.id = votes.duel_id").
+        Joins("left join comments on duels.id = comments.duel_id").
+        Where("duels.user_id = ?", userID).
+        Find(&duelsWithVotesAndComments).Error
+
+    if err != nil {
+        return nil, err
+    }
+
+    return duelsWithVotesAndComments, nil
 }
 
 func addDuels(g *giphy.Client, db *gorm.DB) error {

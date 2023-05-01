@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"net/http"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -11,6 +12,7 @@ type Comment struct {
 	Comment string `json:"comment"`
 	UserID  int    `json:"user_id"`
 	DuelID  int    `json:"duel_id"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func commentaireHandler(db *gorm.DB) http.HandlerFunc {
@@ -22,7 +24,7 @@ func commentaireHandler(db *gorm.DB) http.HandlerFunc {
 		if req.Method == "GET" {
 			// get all comments for the duel
 			var comments []Comment
-			db.Table("comments").Where("duel_id = ?", duelID).Find(&comments)
+			db.Table("comments").Where("duel_id = ?", duelID).Order("created_at DESC").Find(&comments)
 
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(comments)

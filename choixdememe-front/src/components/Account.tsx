@@ -12,12 +12,9 @@ type DuelResponse = {
   caption1: string;
   url2: string;
   caption2: string;
-  user_id: number;
-};
-type VoteResponse = {
-  DuelID: number;
-  vote1_count: number;
-  vote2_count: number;
+  uid: number;
+  vote_count1: number;
+  vote_count2: number;
 };
 
 type CommentReponse = {
@@ -41,6 +38,7 @@ const Account = () => {
     })
     if(res.status==201){
       localStorage.removeItem("memes-token")
+      setDuels([])
       setUser({
         id: -1,
         username: "disconnected"
@@ -58,7 +56,6 @@ const Account = () => {
     });
     let data: DuelResponse[] = await res.json();
     let tab: TDuel[] = [];
-    console.log(data)
     for (let i = 0; i < data.length; i++) {
       let match: TDuel = {
         duel_id: data[i].id,
@@ -71,21 +68,16 @@ const Account = () => {
           caption: data[i].caption2,
         },
         comments: [],
-        vote1: 0,
-        vote2: 0,
+        vote1: data[i].vote_count1,
+        vote2: data[i].vote_count2,
       };
-      let vote: VoteResponse = await (
-        await fetch("http://localhost:8000/vote?duel_id=" + data[i].id)
+      let comm: number = await (
+        await fetch("http://localhost:8000/comment/count?duel_id=" + data[i].id)
       ).json();
-      match.vote1 = vote.vote1_count;
-      match.vote2 = vote.vote2_count;
-      let comm: CommentReponse[] = await (
-        await fetch("http://localhost:8000/comment?duel_id=" + data[i].id)
-      ).json();
-      match.comments = comm;
+      match.comments = new Array(comm).fill({});
       tab.push(match);
     }
-    setDuels(tab);
+    setDuels(tab); 
     setLoading(false);
   }
   useEffect(() => {

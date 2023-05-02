@@ -27,11 +27,11 @@ const Comment = (comment: TComment) => {
   return (
     <>
       <div className="comment">
-        <Avatar {...comment.author} />
+        <Avatar {...{id: comment.user_id, username:comment.username}} />
         <div className="">
-          {comment.author.username}
-          <div className="comment_text">{comment.content}</div>
-          <div className="comment_date">{formatDate(comment.creation_date)}</div>
+          {comment.username}
+          <div className="comment_text">{comment.comment}</div>
+          <div className="comment_date">{formatDate(new Date(comment.created_at))}</div>
         </div>
       </div>
     </>

@@ -10,10 +10,11 @@ interface TUser{
 }
 
 interface TComment{
-  Comment : string
-  UserID: number,
-  DuelID?: number
-  creation_date?: Date
+  comment : string
+  user_id: number,
+  username?: string,
+  duel_id?: number
+  created_at?: string
 }
 
 interface TDuel {

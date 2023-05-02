@@ -19,10 +19,14 @@ type Duel struct {
 }
 
 type DuelWithVotesAndComments struct {
-    Duel   Duel
-    Vote1  int
-	Vote2  int
-    Comments []Comment
+	ID         int    `json:"id"`
+	URL1       string `json:"url1"`
+	Caption1   string `json:"caption1"`
+	URL2       string `json:"url2"`
+	Caption2   string `json:"caption2"`
+	UserID     int    `json:"uid"`
+	Vote1Count int    `json:"vote_count1"`
+	Vote2Count int    `json:"vote_count2"`
 }
 
 func duelHandler(g *giphy.Client, db *gorm.DB) http.HandlerFunc {
@@ -37,25 +41,25 @@ func duelHandler(g *giphy.Client, db *gorm.DB) http.HandlerFunc {
 			}
 
 			startStr := req.URL.Query().Get("start")
-            start, err := strconv.Atoi(startStr)
-            if err != nil {
-                start = 0 // Set a default start index if start parameter is not provided or is invalid
-            }
+			start, err := strconv.Atoi(startStr)
+			if err != nil {
+				start = 0 // Set a default start index if start parameter is not provided or is invalid
+			}
 
 			endStr := req.URL.Query().Get("end")
-            end, err := strconv.Atoi(endStr)
-            if err != nil {
-                end = start + limit // Set a default end index if end parameter is not provided or is invalid
-            }
+			end, err := strconv.Atoi(endStr)
+			if err != nil {
+				end = start + limit // Set a default end index if end parameter is not provided or is invalid
+			}
 
 			// Retrieve the duels with votes and comments
-            duelsWithVotesAndComments, err := getDuelsWithVotesAndComments(db)
-            if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-                return
-            }
+			duelsWithVotesAndComments, err := getDuelsWithVotesAndComments(db)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 
-            duelsWithVotesAndComments = duelsWithVotesAndComments[start:end]
+			duelsWithVotesAndComments = duelsWithVotesAndComments[start:end]
 
 			// Return the duels as a response
 			w.Header().Set("Content-Type", "application/json")
@@ -118,38 +122,36 @@ func userDuelHandler(db *gorm.DB) http.HandlerFunc {
 }
 
 func getDuelsWithVotesAndComments(db *gorm.DB) ([]DuelWithVotesAndComments, error) {
-    var duelsWithVotesAndComments []DuelWithVotesAndComments
+	var duelsWithVotesAndComments []DuelWithVotesAndComments
 
-    // Join the duels, votes and comments tables and retrieve the data
-    err := db.Table("duels").
-		Select("duels.*, votes.vote1, votes.vote2, comments.*").
-        Joins("left join votes on duels.id = votes.duel_id").
-        Joins("left join comments on duels.id = comments.duel_id").
-        Find(&duelsWithVotesAndComments).Error
+	// Join the duels, votes and comments tables and retrieve the data
+	err := db.Table("duels").
+		Distinct("duels.*, votes.vote1_count, votes.vote2_count").
+		Joins("left join votes on duels.id = votes.duel_id").
+		Find(&duelsWithVotesAndComments).Error
 
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    return duelsWithVotesAndComments, nil
+	return duelsWithVotesAndComments, nil
 }
 
 func getUserDuelsWithVotesAndComments(db *gorm.DB, userID int) ([]DuelWithVotesAndComments, error) {
-    var duelsWithVotesAndComments []DuelWithVotesAndComments
+	var duelsWithVotesAndComments []DuelWithVotesAndComments
 
-    // Join the duels, votes and comments tables and retrieve the data
-    err := db.Table("duels").
-        Select("duels.*, votes.vote1, votes.vote2, comments.*").
-        Joins("left join votes on duels.id = votes.duel_id").
-        Joins("left join comments on duels.id = comments.duel_id").
-        Where("duels.user_id = ?", userID).
-        Find(&duelsWithVotesAndComments).Error
+	// Join the duels, votes and comments tables and retrieve the data
+	err := db.Table("duels").
+		Distinct("duels.*, votes.vote1_count, votes.vote2_count").
+		Joins("left join votes on duels.id = votes.duel_id").
+		Where("duels.user_id = ?", userID).
+		Find(&duelsWithVotesAndComments).Error
 
-    if err != nil {
-        return nil, err
-    }
+	if err != nil {
+		return nil, err
+	}
 
-    return duelsWithVotesAndComments, nil
+	return duelsWithVotesAndComments, nil
 }
 
 func addDuels(g *giphy.Client, db *gorm.DB) error {

@@ -65,6 +65,7 @@ func main() {
 	mux.HandleFunc("/duel", duelHandler(g, db))
 	mux.HandleFunc("/users/duel", userDuelHandler(db))
 	mux.HandleFunc("/comment", commentaireHandler(db))
+	mux.HandleFunc("/comment/count", countCommenthandler(db))
 	mux.HandleFunc("/search", searchHandler(g))
 	fmt.Println("Server started and listening on port 8000...")
 

@@ -38,8 +38,8 @@ func main() {
 	}
 
 	db.Logger.LogMode(logger.Info)
-	resetDatabase(db)
-	fmt.Println("Data successfully reset.")
+	/* resetDatabase(db)
+	fmt.Println("Data successfully reset.") */
 	// add 10 duels to database
 	if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")

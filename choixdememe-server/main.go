@@ -47,10 +47,10 @@ func main() {
 	g := giphy.DefaultClient
 	key, _ := os.LookupEnv("GIPHY_API_KEY")
 	g.APIKey = key
-	err = addDuels(g, db)
+	/* err = addDuels(g, db)
 	if err != nil {
 		panic(err)
-	}
+	} */
 	fmt.Println("Duel data successfully added to database.And the votes are created.")
 
 	mux := http.NewServeMux()
@@ -66,7 +66,7 @@ func main() {
 	fmt.Println("Server started and listening on port 8000...")
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"http://localhost:5173"},
+		AllowedOrigins: []string{"https://nimble-pithivier-5d2e78.netlify.app"},
 		AllowedHeaders: []string{"Authorization"},
 		Debug:          true,
 	})

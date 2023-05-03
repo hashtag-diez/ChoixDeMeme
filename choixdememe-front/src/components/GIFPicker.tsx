@@ -13,7 +13,7 @@ const GIFPicker = ({ setGif }) => {
         "Access-Control-Request-Headers": "*",
         "Authorization": localStorage.getItem("memes-token"),
       }
-      let res = await  fetch("http://localhost:8000/search?keyword="+value, {
+      let res = await  fetch("https://choixdememe-production.up.railway.app/search?keyword="+value, {
         method: "GET",
         headers: headers
       })

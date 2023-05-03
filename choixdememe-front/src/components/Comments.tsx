@@ -23,7 +23,7 @@ const Modal = ({
       "Access-Control-Request-Headers": "*",
       "Authorization": localStorage.getItem("memes-token"),
     }
-    let res = await fetch("http://localhost:8000/comment?duel_id="+match[0].duel_id,
+    let res = await fetch("https://choixdememe-production.up.railway.app/comment?duel_id="+match[0].duel_id,
     {
       method: "POST",
       headers: headers,

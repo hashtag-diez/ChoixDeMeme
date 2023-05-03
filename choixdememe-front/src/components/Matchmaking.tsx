@@ -25,7 +25,7 @@ const Matchmaking = ({ setAppear }) => {
       "Access-Control-Request-Headers": "*",
       "Authorization": localStorage.getItem("memes-token"),
     }
-    let res = await fetch("http://localhost:8000/users/duel",
+    let res = await fetch("https://choixdememe-production.up.railway.app/users/duel",
     {
       method: "POST",
       headers: headers,

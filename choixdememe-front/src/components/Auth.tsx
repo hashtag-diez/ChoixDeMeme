@@ -11,7 +11,7 @@ const Auth = () => {
   async function handleSignIn(e: FormEvent) {
     e.preventDefault();
     let form = new FormData(e.target as HTMLFormElement);
-    let res = await  fetch("http://localhost:8000/users/login", {
+    let res = await  fetch("https://choixdememe-production.up.railway.app/users/login", {
       method: "POST",
       body: JSON.stringify({
         Email: form.get('mail'),
@@ -29,7 +29,7 @@ const Auth = () => {
   async function handleSignUp(e: FormEvent) {
     e.preventDefault();
     let form = new FormData(e.target as HTMLFormElement);
-    let res = await  fetch("http://localhost:8000/users", {
+    let res = await  fetch("https://choixdememe-production.up.railway.app/users", {
       method: "POST",
       body: JSON.stringify({
         Username: form.get("username"),

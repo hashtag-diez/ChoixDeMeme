@@ -66,7 +66,7 @@ func main() {
 	fmt.Println("Server started and listening on port 8000...")
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"https://nimble-pithivier-5d2e78.netlify.app, http://127.0.0.1:5500"},
+		AllowedOrigins: []string{"https://choixdememe-production.up.railway.app, https://nimble-pithivier-5d2e78.netlify.app, http://127.0.0.1:5500"},
 		AllowedHeaders: []string{"Authorization"},
 		Debug:          true,
 	})

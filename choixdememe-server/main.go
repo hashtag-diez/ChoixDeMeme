@@ -72,7 +72,11 @@ func main() {
 	})
 
 	handler := c.Handler(mux)
-	log.Fatal(http.ListenAndServe(":8000", handler))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, handler))
 
 	// block main thread
 	select {}

@@ -61,16 +61,15 @@ const Avatar = ( user :  TUser ) => {
     pixelArtNeutral,
     shapes,
   ];
-  const divRef = useRef(null)
+  const divRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     console.log(user)
     const avatar = createAvatar(styles[user.id % styles.length], {
       seed: user.username,
     });
     const svg = avatar.toString()
-    const div = divRef.current as LegacyRef<HTMLDivElement>
-    if(div!==null){
-      div.innerHTML = svg 
+    if(divRef!==null){
+      divRef.current.innerHTML = svg
     }
   }, [])
   return (

@@ -10,7 +10,7 @@ const Menu = ({ children }: { children: ReactNode }) => {
   const [user, _] = useAtom(userAtom);
   const slideOut = () => {
     setAnimate(true);
-    let timeout: NodeJS.Timeout;
+    let timeout
     timeout = setTimeout(() => {
       setAnimate(false);
       setAppear(false);

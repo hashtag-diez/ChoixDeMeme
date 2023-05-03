@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,7 +10,7 @@ import (
 	"github.com/peterhellberg/giphy"
 	"github.com/rs/cors"
 
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -27,17 +26,13 @@ type HelloResponse struct {
 
 var db *gorm.DB
 
-func helloHandler(w http.ResponseWriter, req *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	res := HelloResponse{Message: "Hello World !"}
-	json.NewEncoder(w).Encode(res)
-}
-
 func main() {
 	fmt.Println("Starting server...")
 	// connect to database
 	var err error
-	db, err = gorm.Open(sqlite.Open("memes.db"), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(os.Getenv("DSN")), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		panic("failed to connect database" + err.Error())
 	}

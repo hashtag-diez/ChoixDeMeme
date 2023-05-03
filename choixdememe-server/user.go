@@ -32,6 +32,15 @@ func createUser(db *gorm.DB) http.HandlerFunc {
 			log.Println("Error: db is nil")
 			return
 		}
+
+		// Check if user with the same username or email already exists
+        var existingUser User
+        db.Table("users").Where("username = ?", user.Username).Or("email = ?", user.Email).First(&existingUser)
+        if existingUser.Id != 0 {
+            http.Error(w, "User with the same username or email already exists", http.StatusBadRequest)
+            return
+        }
+
 		// Hash password with MD5
 		hasher := md5.New()
 		hasher.Write([]byte(user.Password))

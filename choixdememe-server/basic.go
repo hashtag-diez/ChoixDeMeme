@@ -34,15 +34,18 @@ func getUserIDFromRequest(req *http.Request, db *gorm.DB) (int, error) {
 	return token.UserID, nil
 }
 
-func videDuels(db *gorm.DB) {
-	// vide duels
-	if err := db.Exec("DELETE FROM duels").Error; err != nil {
-		panic(err)
-	}
+func resetDatabase(db *gorm.DB) {
+    // Truncate all tables
+    err := db.Exec("DELETE FROM duels; DELETE FROM votes; DELETE FROM comments; DELETE FROM users; DELETE FROM tokens").Error
+    if err != nil {
+        panic(err)
+    }
 
-	// reset duels ID
-	if err := db.Exec("DELETE FROM sqlite_sequence WHERE name='duels'").Error; err != nil {
-		panic(err)
-	}
-
+    // Reset auto increment values
+    err = db.Exec("DELETE FROM sqlite_sequence WHERE name IN ('duels', 'votes', 'comments', 'users', 'tokens')").Error
+    if err != nil {
+        panic(err)
+    }
 }
+
+

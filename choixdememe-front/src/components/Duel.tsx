@@ -110,6 +110,11 @@ const Duel = () => {
         let data = await res.json()
         console.log(data)
         console.log(res.status)
+      }else {
+        // User is not logged in, show login prompt and display current vote record
+        let voteRecord = {vote1: match[0].vote1, vote2: match[0].vote2}
+        alert("Please log in to vote.")
+        console.log("Current vote record: ", voteRecord)
       }
       setMatch(newmatches)
       setChose(true)

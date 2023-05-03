@@ -107,10 +107,14 @@ func userDuelHandler(db *gorm.DB) http.HandlerFunc {
 			// Save the new duel to the database
 			db.Table("duels").Create(&duel)
 
-			var duels []Duel
-			db.Table("duels").Where("user_id = ?", userID).Find(&duels)
 
-			db.Table("votes").Create(Vote{DuelID: duels[len(duels)-1].Id})
+			// create the vote for the duel
+			vote := Vote{
+				DuelID:   duel.Id,
+				Vote1Count: 0,
+				Vote2Count: 0,
+			}
+			db.Table("votes").Create(&vote)
 
 			// Return the new duel as a response
 			w.Header().Set("Content-Type", "application/json")
@@ -184,9 +188,17 @@ func addDuels(g *giphy.Client, db *gorm.DB) error {
 		}
 
 		// Save Duel record to database
-		if err := db.Table("duels").Create(duel).Error; err != nil {
+		if err := db.Table("duels").Create(&duel).Error; err != nil {
 			return err
 		}
+
+		// create the vote for the duel
+		vote := Vote{
+			DuelID:   duel.Id,
+			Vote1Count: 0,
+			Vote2Count: 0,
+		}
+		db.Table("votes").Create(&vote)
 	}
 
 	return nil

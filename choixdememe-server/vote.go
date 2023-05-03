@@ -38,27 +38,28 @@ func voteHandler(db *gorm.DB) http.HandlerFunc {
 			json.NewEncoder(w).Encode(vote)
 
 		} else if req.Method == "POST" {
+			// Check if user is authenticated
 			_, err := getUserIDFromRequest(req, db)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusBadRequest)
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
 				return
 			}
 			decoder := json.NewDecoder(req.Body)
 			var choice Choice
-			err2 := decoder.Decode(&choice)
-			if err2 != nil {
+			err = decoder.Decode(&choice)
+			if err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
-
+			
 			// Start a transaction to update vote count
 			tx := db.Begin()
 			var vote Vote
 
-			if err := tx.Table("votes").Where("duel_id = ?", duelID).First(&vote).Error; err != nil {
+			if err := tx.Table("votes").Where("duel_id = ?", choice.DuelID).First(&vote).Error; err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					// Create a new vote record if it doesn't exist yet
-					vote = Vote{DuelID: duelID, Vote1Count: 0, Vote2Count: 0}
+					vote = Vote{DuelID: choice.DuelID, Vote1Count: 0, Vote2Count: 0}
 					if err := tx.Table("votes").Create(&vote).Error; err != nil {
 						tx.Rollback()
 						http.Error(w, "Failed to create vote record", http.StatusInternalServerError)
@@ -70,7 +71,7 @@ func voteHandler(db *gorm.DB) http.HandlerFunc {
 					return
 				}
 			}
-
+		
 			if choice.Option == 1 {
 				vote.Vote1Count++
 			} else {
@@ -84,7 +85,8 @@ func voteHandler(db *gorm.DB) http.HandlerFunc {
 			}
 
 			tx.Commit()
-
+			
+			
 			// Return the updated vote record
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(vote)

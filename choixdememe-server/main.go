@@ -43,7 +43,8 @@ func main() {
 	}
 
 	db.Logger.LogMode(logger.Info)
-	videDuels(db)
+	resetDatabase(db)
+	fmt.Println("Data successfully reset.")
 	// add 10 duels to database
 	if err := godotenv.Load(); err != nil {
 		log.Print("No .env file found")
@@ -55,7 +56,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Duel data successfully added to database.")
+	fmt.Println("Duel data successfully added to database.And the votes are created.")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/users", createUser(db))

@@ -48,7 +48,6 @@ func searchHandler(g *giphy.Client) http.HandlerFunc {
 			}
 			// Return the duels as a response
 			w.Header().Set("Content-Type", "application/json")
-			w.Header().Set("Access-Control-Allow-Origin", "*")
 			json.NewEncoder(w).Encode(duels)
 
 		} else {

@@ -10,7 +10,7 @@ import (
 	"github.com/peterhellberg/giphy"
 	"github.com/rs/cors"
 
-	"gorm.io/driver/mysql"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
@@ -30,9 +30,9 @@ func main() {
 	fmt.Println("Starting server...")
 	// connect to database
 	var err error
-	db, err := gorm.Open(mysql.Open(os.Getenv("DSN")), &gorm.Config{
-		DisableForeignKeyConstraintWhenMigrating: true,
-	})
+	db, err = gorm.Open(sqlite.Open("memes.db"), &gorm.Config{})
+	/* 		DisableForeignKeyConstraintWhenMigrating: true,
+	}) */
 	if err != nil {
 		panic("failed to connect database" + err.Error())
 	}
@@ -66,7 +66,6 @@ func main() {
 	fmt.Println("Server started and listening on port 8000...")
 
 	c := cors.New(cors.Options{
-		AllowedOrigins: []string{"*"},
 		AllowedHeaders: []string{"Authorization"},
 		Debug:          true,
 	})
@@ -74,9 +73,9 @@ func main() {
 	handler := c.Handler(mux)
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "3000"
+		port = "8000"
 	}
-	log.Fatal(http.ListenAndServe("0.0.0.0:"+port, handler))
+	log.Fatal(http.ListenAndServe(":"+port, handler))
 
 	// block main thread
 	select {}

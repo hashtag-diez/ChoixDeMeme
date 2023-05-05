@@ -32,7 +32,7 @@ func commentaireHandler(db *gorm.DB) http.HandlerFunc {
 			// get all comments for the duel
 			var comments []ResponseComment
 			db.Table("comments").
-				Distinct("comments.*, users.username").
+				Select("comments.*, users.username").
 				Joins("left join users on users.id = comments.user_id").
 				Where("duel_id = ?", duelID).
 				Order("created_at DESC").Find(&comments)
@@ -54,7 +54,6 @@ func commentaireHandler(db *gorm.DB) http.HandlerFunc {
 				http.Error(w, err.Error(), http.StatusBadRequest)
 				return
 			}
-			comment.CreatedAt = time.Now()
 			// Create the comment
 			comment.UserID = userID
 			comment.DuelID = duelID

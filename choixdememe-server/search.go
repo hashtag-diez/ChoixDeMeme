@@ -14,12 +14,12 @@ type GIF struct {
 
 func searchHandler(g *giphy.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
-		_, err := getUserIDFromRequest(req, db)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusBadRequest)
-			return
-		}
 		if req.Method == "GET" {
+			_, err := getUserIDFromRequest(req, db)
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusBadRequest)
+				return
+			}
 			// Parse the query parameters
 			keyword := req.URL.Query().Get("keyword")
 			if keyword == "" {

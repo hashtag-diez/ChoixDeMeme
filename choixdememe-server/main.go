@@ -12,7 +12,6 @@ import (
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 type RandomResponse struct {
@@ -37,7 +36,7 @@ func main() {
 		panic("failed to connect database" + err.Error())
 	}
 
-	db.Logger.LogMode(logger.Info)
+	// db.Logger.LogMode(logger.Info)
 	/* resetDatabase(db)
 	fmt.Println("Data successfully reset.") */
 	// add 10 duels to database
@@ -51,7 +50,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	} */
-	fmt.Println("Duel data successfully added to database.And the votes are created.")
+	// fmt.Println("Duel data successfully added to database.And the votes are created.")
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/users", createUser(db))
@@ -63,7 +62,6 @@ func main() {
 	mux.HandleFunc("/comment", commentaireHandler(db))
 	mux.HandleFunc("/comment/count", countCommenthandler(db))
 	mux.HandleFunc("/search", searchHandler(g))
-	fmt.Println("Server started and listening on port 8000...")
 
 	c := cors.New(cors.Options{
 		AllowedHeaders: []string{"Authorization"},

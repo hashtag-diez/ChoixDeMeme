@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -37,6 +38,7 @@ func commentaireHandler(db *gorm.DB) http.HandlerFunc {
 				Where("duel_id = ?", duelID).
 				Order("created_at DESC").Find(&comments)
 
+			fmt.Println(comments)
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(comments)
 

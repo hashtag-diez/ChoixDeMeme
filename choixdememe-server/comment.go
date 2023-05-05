@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -16,11 +15,11 @@ type Comment struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 type ResponseComment struct {
-	Comment   string    `json:"comment"`
-	UserID    int       `json:"user_id"`
-	DuelID    int       `json:"duel_id"`
-	CreatedAt time.Time `json:"created_at"`
-	Username  string    `json:"username"`
+	Comment   string `json:"comment"`
+	UserID    int    `json:"user_id"`
+	DuelID    int    `json:"duel_id"`
+	CreatedAt string `json:"created_at"`
+	Username  string `json:"username"`
 }
 
 func commentaireHandler(db *gorm.DB) http.HandlerFunc {
@@ -35,10 +34,10 @@ func commentaireHandler(db *gorm.DB) http.HandlerFunc {
 			db.Table("comments").
 				Select("comments.*, users.username").
 				Joins("left join users on users.id = comments.user_id").
-				Where("duel_id = ?", duelID).
-				Order("created_at DESC").Find(&comments)
+				Where("comments.duel_id = ?", duelID).
+				Order("created_at DESC").
+				Scan(&comments)
 
-			fmt.Println(comments)
 			w.WriteHeader(http.StatusOK)
 			json.NewEncoder(w).Encode(comments)
 
@@ -50,7 +49,7 @@ func commentaireHandler(db *gorm.DB) http.HandlerFunc {
 				return
 			}
 			decoder := json.NewDecoder(req.Body)
-			var comment Comment
+			var comment ResponseComment
 			err = decoder.Decode(&comment)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)

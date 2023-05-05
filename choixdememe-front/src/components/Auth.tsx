@@ -11,7 +11,7 @@ const Auth = () => {
   async function handleSignIn(e: FormEvent) {
     e.preventDefault();
     let form = new FormData(e.target as HTMLFormElement);
-    let res = await  fetch("https://choixdememe-production.up.railway.app/users/login", {
+    let res = await  fetch("https://choixdememes.onrender.com/users/login", {
       method: "POST",
       body: JSON.stringify({
         Email: form.get('mail'),
@@ -29,7 +29,7 @@ const Auth = () => {
   async function handleSignUp(e: FormEvent) {
     e.preventDefault();
     let form = new FormData(e.target as HTMLFormElement);
-    let res = await  fetch("https://choixdememe-production.up.railway.app/users", {
+    let res = await  fetch("https://choixdememes.onrender.com/users", {
       method: "POST",
       body: JSON.stringify({
         Username: form.get("username"),

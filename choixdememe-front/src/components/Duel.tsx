@@ -42,7 +42,7 @@ const Duel = () => {
     const newMatches = [...base]
     let start = parseInt(localStorage.getItem("memes-index"))
     let data: DuelResponse[] = await (
-      await fetch("https://choixdememe-production.up.railway.app/duel?start="+start, {
+      await fetch("https://choixdememes.onrender.com/duel?start="+start, {
         method: "GET",
       })
     ).json();
@@ -67,7 +67,7 @@ const Duel = () => {
         vote2: data[i].vote_count2,
       };
       let comm = await (
-        await fetch("https://choixdememe-production.up.railway.app/comment?duel_id=" + data[i].id)
+        await fetch("https://choixdememes.onrender.com/comment?duel_id=" + data[i].id)
       ).json();
       match.comments = new Array(comm.length).fill({});
       newMatches.push(match);
@@ -102,7 +102,7 @@ const Duel = () => {
           "Access-Control-Request-Headers": "*",
           "Authorization": localStorage.getItem("memes-token"),
         }
-        let res = await fetch("https://choixdememe-production.up.railway.app/vote?duel_id=", {
+        let res = await fetch("https://choixdememes.onrender.com/vote?duel_id=", {
           method: "POST",
           headers: headers,
           body: JSON.stringify(body)

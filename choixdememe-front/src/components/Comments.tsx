@@ -17,13 +17,13 @@ const Modal = ({
     e.preventDefault()
     let form = new FormData(e.target as HTMLFormElement)
     let body = {
-      comment: form.get("comment").toString()
+      comment: form.get("comment").toString(),
     }
     let headers = {
       "Access-Control-Request-Headers": "*",
       "Authorization": localStorage.getItem("memes-token"),
     }
-    let res = await fetch("https://choixdememe-production.up.railway.app/comment?duel_id="+match[0].duel_id,
+    let res = await fetch("https://choixdememes.onrender.com/comment?duel_id="+match[0].duel_id,
     {
       method: "POST",
       headers: headers,
@@ -74,7 +74,10 @@ const Modal = ({
           {match[0].comments.length == 0 ? (
             <h2>No comments posted</h2>
           ) : (
-            match[0].comments.sort((a,b) => compareDate(a,b)).map((comm) => <Comment key={comm.created_at} {...comm} />)
+            match[0].comments.sort((a,b) => compareDate(a,b)).map((comm) => {
+              console.log(comm)
+              return <Comment key={comm.created_at} {...comm} />
+            })
           )}
         </section>
       </main>

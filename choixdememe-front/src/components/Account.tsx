@@ -32,7 +32,7 @@ const Account = () => {
       "Access-Control-Request-Headers": "*",
       Authorization: localStorage.getItem("memes-token"),
     };
-    let res = await fetch("https://choixdememe-production.up.railway.app/users/logout", {
+    let res = await fetch("https://choixdememes.onrender.com/users/logout", {
       method: "GET",
       headers: headers,
     })
@@ -50,7 +50,7 @@ const Account = () => {
       "Access-Control-Request-Headers": "*",
       Authorization: localStorage.getItem("memes-token"),
     };
-    let res = await fetch("https://choixdememe-production.up.railway.app/users/duel", {
+    let res = await fetch("https://choixdememes.onrender.com/users/duel", {
       method: "GET",
       headers: headers,
     });
@@ -72,7 +72,7 @@ const Account = () => {
         vote2: data[i].vote_count2,
       };
       let comm: number = await (
-        await fetch("https://choixdememe-production.up.railway.app/comment/count?duel_id=" + data[i].id)
+        await fetch("https://choixdememes.onrender.com/comment/count?duel_id=" + data[i].id)
       ).json();
       match.comments = new Array(comm).fill({});
       tab.push(match);

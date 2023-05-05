@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/peterhellberg/giphy"
+	"gorm.io/gorm"
 )
 
 type GIF struct {
@@ -12,7 +13,7 @@ type GIF struct {
 	Link    string `json:"link"`
 }
 
-func searchHandler(g *giphy.Client) http.HandlerFunc {
+func searchHandler(db *gorm.DB, g *giphy.Client) http.HandlerFunc {
 	return func(w http.ResponseWriter, req *http.Request) {
 		if req.Method == "GET" {
 			_, err := getUserIDFromRequest(req, db)

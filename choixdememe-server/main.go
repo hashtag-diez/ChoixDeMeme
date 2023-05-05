@@ -23,8 +23,6 @@ type HelloResponse struct {
 	Message string `json:"message"`
 }
 
-var db *gorm.DB
-
 func main() {
 	fmt.Println("Starting server...")
 	// connect to database
@@ -53,6 +51,7 @@ func main() {
 	// fmt.Println("Duel data successfully added to database.And the votes are created.")
 
 	mux := http.NewServeMux()
+	mux.HandleFunc("/search", searchHandler(db, g))
 	mux.HandleFunc("/users", createUser(db))
 	mux.HandleFunc("/users/login", loginHandler(db))
 	mux.HandleFunc("/users/logout", logoutHandler(db))
@@ -61,9 +60,9 @@ func main() {
 	mux.HandleFunc("/users/duel", userDuelHandler(db))
 	mux.HandleFunc("/comment", commentaireHandler(db))
 	mux.HandleFunc("/comment/count", countCommenthandler(db))
-	mux.HandleFunc("/search", searchHandler(g))
 
 	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"*"},
 		AllowedHeaders: []string{"Authorization"},
 		Debug:          true,
 	})

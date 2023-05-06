@@ -63,7 +63,6 @@ const Avatar = ( user :  TUser ) => {
   ];
   const divRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    console.log(user)
     const avatar = createAvatar(styles[user.id % styles.length], {
       seed: user.username,
     });

@@ -19,7 +19,6 @@ const Auth = () => {
       })
     })
     if(res.status==200){
-      res.headers.forEach(console.log);
       localStorage.setItem("memes-token", res.headers.get("Authorization"))
       let data: TUser = await res.json()
       setUser(data)

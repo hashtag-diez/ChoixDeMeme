@@ -19,7 +19,6 @@ const GIFPicker = ({ setGif }) => {
       })
       let data: TGIF[] = await res.json()
       if(res.status==200){
-        console.log(data)
         setResults(data)
       }
       setLoading(false);

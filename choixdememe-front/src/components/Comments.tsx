@@ -39,7 +39,6 @@ const Modal = ({
         created_at: Date.now().toString(),
       })
       setMatch(newmatches)
-      console.log(match[0].comments)
     }
   }
 
@@ -71,11 +70,10 @@ const Modal = ({
           <h2><u>Log in to comment</u></h2>
         )}
         <section className="comments_list">
-          {match[0].comments.length == 0 ? (
+          {match[0].comments==null || match[0].comments.length == 0 ? (
             <h2>No comments posted</h2>
           ) : (
             match[0].comments.sort((a,b) => compareDate(a,b)).map((comm) => {
-              console.log(comm)
               return <Comment key={comm.created_at} {...comm} />
             })
           )}

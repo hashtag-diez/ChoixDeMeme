@@ -30,13 +30,11 @@ function App() {
       localStorage.setItem("memes-index", "0")
     }
     let start = parseInt(localStorage.getItem("memes-index"))
-    console.log(localStorage.getItem("memes-index"))
     let data: DuelResponse[] = await (
       await fetch("https://choixdememes.onrender.com/duel?start="+start, {
         method: "GET",
       })
     ).json();
-    console.log(data)
     const tab: TDuel[] = []
     for (let i = 0; i < data.length; i++) {
       if(isInvalid(data[i])) break
@@ -57,11 +55,9 @@ function App() {
       let comm = await (
         await fetch("https://choixdememes.onrender.com/comment?duel_id=" + data[i].id)
       ).json();
-      console.log(comm)
-      match.comments = comm
+      match.comments = comm ?? []
       tab.push(match);
     }
-    console.log(tab)
     setMatched(tab); 
     setLoading(false)
   }

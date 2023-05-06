@@ -49,7 +49,7 @@ func commentaireHandler(db *gorm.DB) http.HandlerFunc {
 				return
 			}
 			decoder := json.NewDecoder(req.Body)
-			var comment ResponseComment
+			var comment Comment
 			err = decoder.Decode(&comment)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusBadRequest)

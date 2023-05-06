@@ -69,7 +69,7 @@ const Duel = () => {
       let comm = await (
         await fetch("https://choixdememes.onrender.com/comment?duel_id=" + data[i].id)
       ).json();
-      match.comments = new Array(comm.length).fill({});
+      match.comments = comm ?? [];
       newMatches.push(match);
     }
     return newMatches
@@ -83,7 +83,6 @@ const Duel = () => {
     }
     newmatches.shift()
     setMatch(newmatches)
-    console.log(match)
     setChose(false)
     setAppear(false)
   }
@@ -108,13 +107,9 @@ const Duel = () => {
           body: JSON.stringify(body)
         })
         let data = await res.json()
-        console.log(data)
-        console.log(res.status)
       }else {
         // User is not logged in, show login prompt and display current vote record
-        let voteRecord = {vote1: match[0].vote1, vote2: match[0].vote2}
         alert("Please log in to vote. Your vote does not count. ")
-        console.log("Current vote record: ", voteRecord)
       }
       setMatch(newmatches)
       setChose(true)

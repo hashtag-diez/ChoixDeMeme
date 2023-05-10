@@ -1,11 +1,16 @@
-import '../loader.css'
+import "../loader.css";
 
-const loader = () => (
-  <div className="lds-ellipsis">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-)
-export default loader
+const loader = ({ color }) => {
+  const style = {
+    "--var": color,
+  } as React.CSSProperties;
+  return (
+    <div className="lds-ellipsis">
+      <div style={style}></div>
+      <div style={style}></div>
+      <div style={style}></div>
+      <div style={style}></div>
+    </div>
+  );
+};
+export default loader;

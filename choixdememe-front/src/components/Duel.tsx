@@ -101,12 +101,11 @@ const Duel = () => {
           "Access-Control-Request-Headers": "*",
           "Authorization": localStorage.getItem("memes-token"),
         }
-        let res = await fetch("https://choixdememes.onrender.com/vote?duel_id=", {
+        await fetch("https://choixdememes.onrender.com/vote?duel_id=", {
           method: "POST",
           headers: headers,
           body: JSON.stringify(body)
         })
-        let data = await res.json()
       }else {
         // User is not logged in, show login prompt and display current vote record
         alert("Please log in to vote. Your vote does not count. ")

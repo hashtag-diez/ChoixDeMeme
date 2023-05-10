@@ -42,7 +42,7 @@ const GIFPicker = ({ setGif }) => {
           {!loading ? results.map((gif) => (
             <img key={gif.caption} className="gif_found" src={gif.link} alt="" onClick={() => setGif(gif)} />
           ))
-        : <Loader/>}
+        : <Loader color={"#000000"}/>}
         </div>
     </div>
   );

@@ -28,8 +28,9 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  align-items: centera;
   min-width: 320px;
+  width: 100vw !important;
   min-height: 100vh;
 }
 
@@ -55,6 +56,13 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+#root{
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 @media (prefers-color-scheme: light) {

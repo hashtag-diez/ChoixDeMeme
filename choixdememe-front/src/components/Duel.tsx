@@ -87,7 +87,7 @@ const Duel = () => {
     setAppear(false)
   }
 
-  async function vote(arg0: number) {
+  function vote(arg0: number) {
     if(!chose){
       const newmatches = [...match]
       newmatches[0].vote1 = newmatches[0].vote1 + (arg0==1 ? 1 : 0)
@@ -101,7 +101,7 @@ const Duel = () => {
           "Access-Control-Request-Headers": "*",
           "Authorization": localStorage.getItem("memes-token"),
         }
-        await fetch("https://choixdememes.onrender.com/vote?duel_id=", {
+        fetch("https://choixdememes.onrender.com/vote?duel_id=", {
           method: "POST",
           headers: headers,
           body: JSON.stringify(body)

@@ -1,5 +1,5 @@
-# Pour accéder à l'application, suivre ce [lien](https://6458ade13b84357bb7894722--frolicking-chebakia-1a4250.netlify.app/)
-Ou [https://6458ade13b84357bb7894722--frolicking-chebakia-1a4250.netlify.app/](https://6458ade13b84357bb7894722--frolicking-chebakia-1a4250.netlify.app/)
+# Pour accéder à l'application, suivre ce [lien](https://645b47a2c48da60da2b0cdba--frolicking-chebakia-1a4250.netlify.app/)
+Ou https://645b47a2c48da60da2b0cdba--frolicking-chebakia-1a4250.netlify.app/
 
 ## Dépendances nécessaires pour le projet 
 - NPM : `sudo apt install npm` (Linux)
